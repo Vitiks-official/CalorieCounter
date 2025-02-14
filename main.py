@@ -1,3 +1,4 @@
+import datetime
 import sqlite3
 import sys
 from datetime import date
@@ -7,7 +8,7 @@ from PyQt6.QtWidgets import (QApplication, QWidget, QLabel, QPushButton, QLineEd
 from PyQt6.QtGui import QPixmap, QIcon, QCursor
 from PyQt6.QtCore import Qt
 from pyqtgraph import PlotWidget
-from other import font, ProgressBarStyle
+from other import font, ProgressBarStyle, list_style
 
 
 # класс главного окна приложения
@@ -31,6 +32,7 @@ class CalorieCounter(QWidget):
         self.settings_button.setGeometry(820, 10, 71, 71)
         self.settings_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.settings_button.setIcon(QIcon('images/setting_icon.png'))
+        self.settings_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.settings_button.setIconSize(self.settings_button.size())
         self.settings_button.clicked.connect(self.settings_button_clicked)
 
@@ -39,6 +41,7 @@ class CalorieCounter(QWidget):
         self.statistics_button.setGeometry(820, 90, 71, 71)
         self.statistics_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.statistics_button.setIcon(QIcon('images/statistics_icon.png'))
+        self.statistics_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.statistics_button.setIconSize(self.statistics_button.size())
         self.statistics_button.clicked.connect(self.statistics_button_clicked)
 
@@ -47,6 +50,7 @@ class CalorieCounter(QWidget):
         self.exit_button.setGeometry(10, 520, 71, 71)
         self.exit_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.exit_button.setIcon(QIcon('images/exit_icon.png'))
+        self.exit_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.exit_button.setIconSize(self.exit_button.size())
         self.exit_button.clicked.connect(self.close)
 
@@ -55,6 +59,7 @@ class CalorieCounter(QWidget):
         self.add_meal_button.setGeometry(340, 310, 221, 61)
         self.add_meal_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.add_meal_button.setIcon(QIcon('images/add_meal_button_icon.png'))
+        self.add_meal_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.add_meal_button.setIconSize(self.add_meal_button.size())
         self.add_meal_button.clicked.connect(self.add_meal_button_clicked)
 
@@ -63,6 +68,7 @@ class CalorieCounter(QWidget):
         self.database_food_button.setGeometry(350, 380, 201, 61)
         self.database_food_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.database_food_button.setIcon(QIcon('images/add_food_button_icon.png'))
+        self.database_food_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.database_food_button.setIconSize(self.database_food_button.size())
         self.database_food_button.clicked.connect(self.database_food_button_clicked)
 
@@ -189,6 +195,7 @@ class Settings(QWidget):
         self.back_button.setGeometry(10, 10, 71, 71)
         self.back_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.back_button.setIcon(QIcon('images/back_icon.png'))
+        self.back_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.back_button.setIconSize(self.back_button.size())
         self.back_button.clicked.connect(self.back_button_clicked)
 
@@ -218,6 +225,7 @@ class Settings(QWidget):
         self.height_change_button.setGeometry(370, 160, 121, 51)
         self.height_change_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.height_change_button.setIcon(QIcon('images/Change_button_icon.png'))
+        self.height_change_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.height_change_button.setIconSize(self.profile_icon.size())
         self.height_change_button.clicked.connect(self.change_height_clicked)
 
@@ -233,6 +241,7 @@ class Settings(QWidget):
         self.weight_change_button.setGeometry(370, 220, 121, 51)
         self.weight_change_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.weight_change_button.setIcon(QIcon('images/Change_button_icon.png'))
+        self.weight_change_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.weight_change_button.setIconSize(self.profile_icon.size())
         self.weight_change_button.clicked.connect(self.change_weight_clicked)
 
@@ -248,6 +257,7 @@ class Settings(QWidget):
         self.age_change_button.setGeometry(370, 280, 121, 51)
         self.age_change_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.age_change_button.setIcon(QIcon('images/Change_button_icon.png'))
+        self.age_change_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.age_change_button.setIconSize(self.profile_icon.size())
         self.age_change_button.clicked.connect(self.change_age_clicked)
 
@@ -310,6 +320,7 @@ class Settings(QWidget):
         self.logout_button.setGeometry(10, 670, 481, 51)
         self.logout_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.logout_button.setIcon(QIcon('images/Logout_button_icon.png'))
+        self.logout_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.logout_button.setIconSize(self.logout_button.size())
         self.logout_button.clicked.connect(self.logout_button_clicked)
 
@@ -317,6 +328,7 @@ class Settings(QWidget):
         self.delete_account_button.setGeometry(10, 730, 481, 51)
         self.delete_account_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.delete_account_button.setIcon(QIcon('images/delete_account_button_icon.png'))
+        self.delete_account_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.delete_account_button.setIconSize(self.delete_account_button.size())
         self.delete_account_button.clicked.connect(self.delete_account_button_clicked)
 
@@ -407,6 +419,7 @@ class ChangeInformation(QWidget):
         self.cancel_button.setGeometry(10, 120, 170, 40)
         self.cancel_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.cancel_button.setIcon(QIcon('images/cancel_button_icon.png'))
+        self.cancel_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.cancel_button.setIconSize(self.cancel_button.size())
         self.cancel_button.clicked.connect(self.cancel_button_clicked)
 
@@ -425,6 +438,7 @@ class ChangeInformation(QWidget):
         self.apply_button.setGeometry(190, 120, 170, 40)
         self.apply_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.apply_button.setIcon(QIcon('images/apply_button_icon.png'))
+        self.apply_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.apply_button.setIconSize(self.apply_button.size())
         self.apply_button.clicked.connect(self.apply_button_clicked)
 
@@ -548,6 +562,7 @@ class Registration(QWidget):
         self.to_login_button.setGeometry(10, 300, 231, 41)
         self.to_login_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.to_login_button.setIcon(QIcon('images/login_button_icon.png'))
+        self.to_login_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.to_login_button.setIconSize(self.to_login_button.size())
         self.to_login_button.clicked.connect(self.to_login_button_clicked)
 
@@ -555,6 +570,7 @@ class Registration(QWidget):
         self.registration_button.setGeometry(250, 300, 231, 41)
         self.registration_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.registration_button.setIcon(QIcon('images/Registration_button_icon.png'))
+        self.registration_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.registration_button.setIconSize(self.registration_button.size())
         self.registration_button.clicked.connect(self.registration_button_clicked)
 
@@ -623,6 +639,7 @@ class Login(QWidget):
         self.registration_button.setGeometry(10, 180, 231, 41)
         self.registration_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.registration_button.setIcon(QIcon('images/Registration_button_icon.png'))
+        self.registration_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.registration_button.setIconSize(self.registration_button.size())
         self.registration_button.clicked.connect(self.registration_button_clicked)
 
@@ -631,6 +648,7 @@ class Login(QWidget):
         self.login_button.setGeometry(260, 180, 231, 41)
         self.login_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.login_button.setIcon(QIcon('images/login_button_icon.png'))
+        self.login_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.login_button.setIconSize(self.login_button.size())
         self.login_button.clicked.connect(self.login_button_clicked)
 
@@ -708,6 +726,7 @@ class Products(QWidget):
         self.refresh_button.setGeometry(100, 50, 185, 31)
         self.refresh_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.refresh_button.setIcon(QIcon('images/refresh_button_icon.png'))
+        self.refresh_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.refresh_button.setIconSize(self.refresh_button.size())
         self.refresh_button.clicked.connect(self.refresh_button_clicked)
 
@@ -715,6 +734,7 @@ class Products(QWidget):
         self.back_button.setGeometry(10, 10, 71, 71)
         self.back_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.back_button.setIcon(QIcon('images/back_icon.png'))
+        self.back_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.back_button.setIconSize(self.back_button.size())
         self.back_button.clicked.connect(self.back_button_clicked)
 
@@ -722,6 +742,7 @@ class Products(QWidget):
         self.search_button.setGeometry(300, 50, 185, 31)
         self.search_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.search_button.setIcon(QIcon('images/search_button_icon.png'))
+        self.search_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.search_button.setIconSize(self.search_button.size())
         self.search_button.clicked.connect(self.search_button_clicked)
 
@@ -729,6 +750,7 @@ class Products(QWidget):
         self.add_button.setGeometry(510, 300, 371, 41)
         self.add_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.add_button.setIcon(QIcon('images/add_button_icon.png'))
+        self.add_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.add_button.setIconSize(self.add_button.size())
         self.add_button.clicked.connect(self.add_button_clicked)
 
@@ -736,6 +758,7 @@ class Products(QWidget):
         self.delete_button.setGeometry(510, 480, 371, 41)
         self.delete_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.delete_button.setIcon(QIcon('images/delete_button_icon.png'))
+        self.delete_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.delete_button.setIconSize(self.delete_button.size())
         self.delete_button.clicked.connect(self.delete_button_clicked)
 
@@ -959,6 +982,7 @@ class ErrorMessage(QWidget):
         self.button_ok.setGeometry(110, 100, 100, 24)
         self.button_ok.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.button_ok.setIcon(QIcon('images/warning_ok_button_icon.png'))
+        self.button_ok.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.button_ok.setIconSize(self.button_ok.size())
         self.button_ok.clicked.connect(self.close)
 
@@ -989,6 +1013,7 @@ class Meal(QWidget):
         self.back_button.setGeometry(10, 10, 71, 71)
         self.back_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.back_button.setIcon(QIcon('images/back_icon.png'))
+        self.back_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.back_button.setIconSize(self.back_button.size())
         self.back_button.clicked.connect(self.back_button_clicked)
 
@@ -1010,6 +1035,7 @@ class Meal(QWidget):
         self.refresh_button.setGeometry(110, 50, 185, 31)
         self.refresh_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.refresh_button.setIcon(QIcon('images/refresh_button_icon.png'))
+        self.refresh_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.refresh_button.setIconSize(self.refresh_button.size())
         self.refresh_button.clicked.connect(self.refresh_button_clicked)
 
@@ -1017,6 +1043,7 @@ class Meal(QWidget):
         self.search_button.setGeometry(310, 50, 185, 31)
         self.search_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.search_button.setIcon(QIcon('images/search_button_icon.png'))
+        self.search_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.search_button.setIconSize(self.search_button.size())
         self.search_button.clicked.connect(self.search_button_clicked)
 
@@ -1030,6 +1057,7 @@ class Meal(QWidget):
         self.add_button.setGeometry(80, 550, 371, 41)
         self.add_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.add_button.setIcon(QIcon('images/add_button_icon.png'))
+        self.add_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.add_button.setIconSize(self.add_button.size())
         self.add_button.clicked.connect(self.add_button_clicked)
 
@@ -1040,6 +1068,7 @@ class Meal(QWidget):
         self.delete_button.setGeometry(540, 505, 341, 41)
         self.delete_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.delete_button.setIcon(QIcon('images/delete_button_icon.png'))
+        self.delete_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.delete_button.setIconSize(self.delete_button.size())
         self.delete_button.clicked.connect(self.delete_button_clicked)
 
@@ -1047,6 +1076,7 @@ class Meal(QWidget):
         self.already_button.setGeometry(540, 550, 341, 41)
         self.already_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.already_button.setIcon(QIcon('images/already_button_icon.png'))
+        self.already_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.already_button.setIconSize(self.delete_button.size())
         self.already_button.clicked.connect(self.already_button_clicked)
 
@@ -1216,10 +1246,10 @@ class Statistics(QWidget):
         self.move((get_monitors()[0].width - self.width()) // 2, (get_monitors()[0].height - self.height()) // 2)
         self.background = QLabel(self)
         self.background.setGeometry(0, 0, self.width(), self.height())
-        self.background.setPixmap(QPixmap('images/main_background_image.jpg')) # переделать
+        self.background.setPixmap(QPixmap('images/Statistics_background_image.png'))
         self.setWindowIcon(QIcon("images/Statistic_window_icon.png"))
 
-        font.setPointSize(22)
+        font.setPointSize(24)
         con = sqlite3.connect("database.sqlite")
         cur = con.cursor()
 
@@ -1233,6 +1263,17 @@ class Statistics(QWidget):
 
         self.days_list_with_stats = QListWidget(self)
         self.days_list_with_stats.setGeometry(10, 90, 601, 501)
+        self.days_list_with_stats.setFont(font)
+        self.days_list_with_stats.setStyleSheet(list_style)
+        self.days_list_with_stats.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
+        for i in list(cur.execute(f"""SELECT * from days_stats WHERE name == '{list(open("login.txt", 'r'))[0]}'"""))[::-1]:
+            data = i[2].split('-')
+            message = f"""Дата:\t{data[2]}.{data[1]}.{data[0]}
+Calories:\t\t{round(i[3], 2)} ККал
+Proteins:\t\t{round(i[4], 2)} г
+Fats:\t\t\t{round(i[5], 2)} г
+Carbohydrates:\t{round(i[6], 2)} г"""
+            self.days_list_with_stats.addItem(message)
 
         self.main_label = QLabel(self)
         self.main_label.setGeometry(80, 10, 941, 71)
@@ -1241,16 +1282,64 @@ class Statistics(QWidget):
         self.main_label.setText("Статистика")
 
         font.setPointSize(16)
+        stats = []
+        for i in range(-6, 1):
+            arr = list(cur.execute(f"""SELECT * from days_stats WHERE name == '{list(open('login.txt', 'r'))[0]}' AND
+             day == '{date.today() + datetime.timedelta(days=i)}'"""))
+            if arr:
+                stats.append([arr[0][3], arr[0][4], arr[0][5], arr[0][6]])
+            else:
+                stats.append([0, 0, 0, 0])
 
         self.Calories_graphic = PlotWidget(self)
         self.Calories_graphic.setGeometry(620, 130, 231, 192)
-        self.Calories_graphic.plot([1, 2, 3, 4, 5, 6, 7], [1000, 1500, 273, 2500, 300, 273, 700], pen='r')
+        self.Calories_graphic.setInteractive(False)
+        self.Calories_graphic.setBackground('white')
+        self.Calories_graphic.plot([i for i in range(1, 8)], [i[0] for i in stats], pen='black')
 
         self.Calories_label = QLabel(self)
         self.Calories_label.setGeometry(620, 90, 231, 31)
         self.Calories_label.setFont(font)
         self.Calories_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.Calories_label.setText("Calories")
+
+        self.Proteins_graphic = PlotWidget(self)
+        self.Proteins_graphic.setGeometry(860, 130, 231, 192)
+        self.Proteins_graphic.setInteractive(False)
+        self.Proteins_graphic.setBackground('white')
+        self.Proteins_graphic.plot([i for i in range(1, 8)], [i[1] for i in stats], pen='black')
+
+        self.Proteins_label = QLabel(self)
+        self.Proteins_label.setGeometry(860, 90, 231, 31)
+        self.Proteins_label.setFont(font)
+        self.Proteins_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.Proteins_label.setText("Proteins")
+
+        self.Fats_graphic = PlotWidget(self)
+        self.Fats_graphic.setGeometry(620, 390, 231, 192)
+        self.Fats_graphic.setInteractive(False)
+        self.Fats_graphic.setBackground('white')
+        self.Fats_graphic.plot([i for i in range(1, 8)], [i[2] for i in stats], pen='black')
+
+        self.fats_label = QLabel(self)
+        self.fats_label.setGeometry(620, 350, 231, 31)
+        self.fats_label.setFont(font)
+        self.fats_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.fats_label.setText("Fats")
+
+        self.Carbohydrates_graphic = PlotWidget(self)
+        self.Carbohydrates_graphic.setGeometry(860, 390, 231, 192)
+        self.Carbohydrates_graphic.setInteractive(False)
+        self.Carbohydrates_graphic.setBackground('white')
+        self.Carbohydrates_graphic.plot([i for i in range(1, 8)], [i[3] for i in stats], pen='black')
+
+        self.Carbohydrates_label = QLabel(self)
+        self.Carbohydrates_label.setGeometry(860, 350, 231, 31)
+        self.Carbohydrates_label.setFont(font)
+        self.Carbohydrates_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.Carbohydrates_label.setText("Carbohydrates")
+
+        con.close()
 
     # кнопка Назад
     def back_button_clicked(self):
