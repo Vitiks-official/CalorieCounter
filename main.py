@@ -3,9 +3,10 @@ import sys
 from datetime import date
 from screeninfo import get_monitors
 from PyQt6.QtWidgets import (QApplication, QWidget, QLabel, QPushButton, QLineEdit, QComboBox, QTableWidget,
-                             QTableWidgetItem, QAbstractItemView, QHeaderView, QProgressBar)
-from PyQt6.QtGui import QPixmap, QIcon
+                             QTableWidgetItem, QAbstractItemView, QHeaderView, QProgressBar, QListWidget)
+from PyQt6.QtGui import QPixmap, QIcon, QCursor
 from PyQt6.QtCore import Qt
+from pyqtgraph import PlotWidget
 from other import font, ProgressBarStyle
 
 
@@ -1126,17 +1127,27 @@ class Meal(QWidget):
 
     # функция добавления в лист продукта в приеме пищи
     def add_button_clicked(self):
+        global error
         con = sqlite3.connect("database.sqlite")
         cur = con.cursor()
-        product = cur.execute(f"""SELECT name FROM products WHERE id = {self.id_lineEdit.text()}""").fetchone()[0]
-        if product in [i[0] for i in self.text]:
-            for i in self.text:
-                if i[0] == product:
-                    i[1] += int(self.weight_lineEdit.text())
-                    break
+        if self.id_lineEdit.text() in [str(i[0]) for i in cur.execute("SELECT id from products").fetchall()]:
+            product = cur.execute(f"""SELECT name FROM products WHERE id = {self.id_lineEdit.text()}""").fetchone()[0]
+            if product in [i[0] for i in self.text] and self.weight_lineEdit.text().isnumeric():
+                for i in self.text:
+                    if i[0] == product:
+                        i[1] += int(self.weight_lineEdit.text())
+                        break
+            elif self.weight_lineEdit.text().isnumeric():
+                self.text.append([product, int(self.weight_lineEdit.text())])
+            else:
+                error = ErrorMessage()
+                error.set_message("Некорректный ввод!")
+                error.show()
+            self.refresh_list()
         else:
-            self.text.append([product, int(self.weight_lineEdit.text())])
-        self.refresh_list()
+            error = ErrorMessage()
+            error.set_message("Некорректный ввод!")
+            error.show()
         con.close()
 
     # функция для обновления листа
@@ -1201,50 +1212,45 @@ class Statistics(QWidget):
 
     def initUI(self):
         self.setWindowTitle("Statistics")
-        self.setFixedSize(900, 600)
+        self.setFixedSize(1100, 600)
         self.move((get_monitors()[0].width - self.width()) // 2, (get_monitors()[0].height - self.height()) // 2)
         self.background = QLabel(self)
         self.background.setGeometry(0, 0, self.width(), self.height())
-        self.background.setPixmap(QPixmap('images/main_background_image.jpg'))
+        self.background.setPixmap(QPixmap('images/main_background_image.jpg')) # переделать
         self.setWindowIcon(QIcon("images/Statistic_window_icon.png"))
+
+        font.setPointSize(22)
+        con = sqlite3.connect("database.sqlite")
+        cur = con.cursor()
 
         self.back_button = QPushButton(self)
         self.back_button.setGeometry(10, 10, 71, 71)
+        self.back_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.back_button.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
         self.back_button.setIcon(QIcon('images/back_icon.png'))
         self.back_button.setIconSize(self.back_button.size())
         self.back_button.clicked.connect(self.back_button_clicked)
 
-        font.setPointSize(22)
-        self.text = QLabel(self)
-        self.text.setGeometry(80, 10, 751, 81)
-        self.text.setFont(font)
-        self.text.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.text.setText("Статистика за все время")
+        self.days_list_with_stats = QListWidget(self)
+        self.days_list_with_stats.setGeometry(10, 90, 601, 501)
 
-        self.stats_table = QTableWidget(self)
-        self.stats_table.setGeometry(10, 90, 881, 501)
-        self.stats_table.setColumnCount(0)
-        self.stats_table.setRowCount(0)
-        # занос информации о пользователе в таблицу
-        con = sqlite3.connect("database.sqlite")
-        cur = con.cursor()
-        result = [*cur.execute(f"""SELECT day, calories, proteins, fats, carbohydrates FROM days_stats 
-        WHERE name = '{open("login.txt", "r").read()}'""")]
-        self.stats_table.setColumnCount(len(result[0]))
-        self.stats_table.setRowCount(len(result))
-        self.stats_table.clear()
-        self.stats_table.horizontalHeader().setDefaultSectionSize(173)
-        self.stats_table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-        self.stats_table.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
-        self.stats_table.setHorizontalHeaderLabels(["date", "calories", "proteins", "fats", "carbs"])
-        for i in range(5):
-            self.stats_table.horizontalHeader().setSectionResizeMode(i, QHeaderView.ResizeMode.Fixed)
-        for row, item in enumerate(result):
-            for col, value in enumerate(item):
-                item = QTableWidgetItem(str(value))
-                self.stats_table.setItem(row, col, item)
-        con.close()
+        self.main_label = QLabel(self)
+        self.main_label.setGeometry(80, 10, 941, 71)
+        self.main_label.setFont(font)
+        self.main_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.main_label.setText("Статистика")
+
+        font.setPointSize(16)
+
+        self.Calories_graphic = PlotWidget(self)
+        self.Calories_graphic.setGeometry(620, 130, 231, 192)
+        self.Calories_graphic.plot([1, 2, 3, 4, 5, 6, 7], [1000, 1500, 273, 2500, 300, 273, 700], pen='r')
+
+        self.Calories_label = QLabel(self)
+        self.Calories_label.setGeometry(620, 90, 231, 31)
+        self.Calories_label.setFont(font)
+        self.Calories_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.Calories_label.setText("Calories")
 
     # кнопка Назад
     def back_button_clicked(self):
